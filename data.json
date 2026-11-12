@@ -1,0 +1,32 @@
+{
+  "updated": "2026-11-11T23:49:00Z",
+  "status": "night run",
+  "source": "rapport Grok Bot 00:49 (saisi à la main en attendant le flux live)",
+  "counters": {"scanned": 0, "traded": 5},
+  "desks": {
+    "A":  {"name": "Photo strict", "start": 100, "equity": 98.68, "trades": 2, "status": "actif"},
+    "A2": {"name": "Score normalisé", "start": 100, "equity": 96.67, "trades": 3, "status": "pause 1h (3 pertes)"},
+    "B":  {"name": "Whales photo", "start": 100, "equity": 100.00, "trades": 0, "status": "aucune whale"},
+    "C":  {"name": "Copy top 10", "start": 100, "equity": 100.00, "trades": 0, "status": "inactif"},
+    "Shadow": {"name": "Shadow 1 USDC", "start": 100, "equity": 99.72, "trades": 2, "status": "actif"}
+  },
+  "sol_hold": {"equity": 97.60},
+  "agents": [
+    {"name": "Scout", "role": "nouvelles paires", "last": "30m-72h · mcap $300k-$20M"},
+    {"name": "Filter", "role": "8 kill rules", "last": "LP, dev >3 %, +80 % 1h…"},
+    {"name": "Analyst", "role": "score 70+", "last": "score normalisé"},
+    {"name": "Whale Hunter", "role": "classement copie", "last": "80 wallets évalués · 0 retenu"},
+    {"name": "Copy", "role": "test de copiabilité", "last": "inactif"},
+    {"name": "Executor", "role": "≤ 8 USDC", "last": "devis Jupiter"},
+    {"name": "Risk", "role": "stop · trail", "last": "A2 en pause 1h"},
+    {"name": "Logger", "role": "raison pour tout", "last": "bougie aberrante rejetée"},
+    {"name": "Coach", "role": "apprentissage", "last": "< 30 échantillons"}
+  ],
+  "log": [
+    {"t": "2026-11-11T23:14:00Z", "agent": "RISK", "type": "warn", "desk": "A2", "text": "3 pertes d'affilée → pause 1h"},
+    {"t": "2026-11-11T22:30:00Z", "agent": "LOGGER", "type": "warn", "desk": "all", "text": "bougie GeckoTerminal ×150 rejetée (data_missing)"}
+  ],
+  "kills": [], "wallets": [], "positions": [], "trades": [],
+  "coach": {"lessons": [], "challengers": [], "gate": {"trades": 5, "days": 1}},
+  "helius": {"used": 20000, "limit": 30000}
+}

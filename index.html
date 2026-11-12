@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>Grok Desk [SIM]</title>
+<style>
+:root{
+  --bg:#0b0d10;--card:#12161b;--card2:#171c22;--line:#232a32;--text:#e8edf2;--mut:#7d8894;
+  --green:#22c55e;--green-bg:#0f2e1c;--red:#ef4444;--red-bg:#2e1214;--orange:#f59e0b;--blue:#3b82f6;
+  --purple:#8b5cf6;--teal:#14b8a6;--pink:#ec4899;--yellow:#eab308;--violet:#a855f7;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 -apple-system,system-ui,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:12px 16px 40px}
+header{display:flex;align-items:center;gap:12px;padding:6px 0 10px}
+.logo{width:42px;height:42px;border-radius:12px;background:#e9ecef;display:grid;place-items:center;flex:none}
+.logo i{width:8px;height:16px;background:#111;border-radius:4px;display:inline-block;margin:0 3px;transform:rotate(-25deg)}
+h1{font-size:22px;margin:0;font-weight:700}
+.sub{color:var(--mut);font-size:13px}
+.pill{font-family:var(--mono);font-size:12px;padding:3px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.pill.live{color:var(--green);border-color:#1d4d31}.pill.sleep{color:var(--orange);border-color:#5a3c0b}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:1px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.tabs button{flex:none;font:600 13px var(--mono);color:var(--mut);background:var(--card);border:1px solid var(--line);padding:7px 12px;border-radius:10px;cursor:pointer}
+.tabs button.on{color:var(--text);border-color:var(--green);background:var(--green-bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.card h2{font-size:18px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card h2 small{font:500 12px var(--mono);color:var(--mut)}
+.eqtop{display:flex;justify-content:space-between;color:var(--mut);font-size:13px}
+.big{font-size:52px;font-weight:800;letter-spacing:-1px;margin:4px 0 0}
+.big span{font-size:28px;color:var(--mut);font-weight:700}
+.mult{font:700 15px var(--mono);padding:4px 10px;border-radius:999px;background:var(--green);color:#052e16}
+.mult.neg{background:var(--red);color:#2b0606}
+.pnl{font-weight:700;margin-top:4px}.up{color:var(--green)}.down{color:var(--red)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+svg.curve{width:100%;height:120px;display:block;margin-top:10px}
+.legend{display:flex;gap:14px;font:12px var(--mono);color:var(--mut);margin-top:4px}
+.legend b{display:inline-block;width:14px;height:3px;vertical-align:3px;margin-right:5px;border-radius:2px}
+.agent{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.agent:first-of-type{border-top:0}
+.ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font:800 15px var(--mono);color:#fff}
+.an{font-weight:700}.ar{color:var(--mut);font-size:12px}
+.al{color:var(--mut);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.ac{font:600 12px var(--mono);padding:4px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line);white-space:nowrap}
+.log{font:13px/1.7 var(--mono);max-height:340px;overflow:auto}
+.log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log .t{color:var(--mut);margin-right:8px}
+.k-kill{color:#f87171}.k-buy,.k-win{color:#4ade80}.k-loss{color:#fb7185}.k-warn{color:var(--orange)}.k-info{color:var(--mut)}
+.log b{font-weight:700}
+.bar{display:grid;grid-template-columns:1fr 60px;gap:8px;align-items:center;margin:7px 0;font-size:13px}
+.bar .l{display:flex;justify-content:space-between;color:var(--mut)}
+.bar .track{height:6px;background:var(--card2);border-radius:4px;margin-top:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--red);border-radius:4px}
+.bar .n{text-align:right;font:700 13px var(--mono);color:#f87171}
+.bar .sh{font:11px var(--mono);color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--mut);font-weight:500;text-align:left;padding:6px 4px;font-size:12px}
+td{padding:7px 4px;border-top:1px solid var(--line);font-family:var(--mono);white-space:nowrap}
+td.r,th.r{text-align:right}
+.tw{overflow-x:auto}
+.empty{color:var(--mut);font:13px var(--mono);padding:8px 0}
+ul.lessons{margin:0;padding-left:18px}ul.lessons li{margin:6px 0}
+.gate{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font:13px var(--mono)}
+.gate div{padding:6px 8px;border-radius:8px;background:var(--card2)}
+.ok{color:var(--green)}.no{color:var(--mut)}
+.banner{background:#2a1d06;border:1px solid #5a3c0b;color:var(--orange);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px;display:none}
+footer{color:var(--mut);font:12px var(--mono);text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><i></i><i></i></div>
+    <div style="flex:1;min-width:0">
+      <h1>Grok Desk</h1>
+      <div class="sub">paper trading · données réelles · [SIM]</div>
+    </div>
+    <span id="status" class="pill"><span class="dot"></span>…</span>
+  </header>
+
+  <div id="banner" class="banner"></div>
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="card">
+    <div class="eqtop"><span id="eqlabel">Équité</span><span id="clock"></span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div class="big" id="eq">—</div><span class="mult" id="mult">1.00×</span>
+    </div>
+    <div class="pnl" id="pnl"></div>
+    <div class="meta" id="meta"></div>
+    <svg class="curve" id="curve" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+    <div class="legend"><span><b style="background:var(--green)"></b>équité</span><span><b style="background:var(--mut)"></b>SOL tenu</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Desk · <span id="nag">9</span> agents <small id="deskcount"></small></h2>
+    <div id="agents"></div>
+  </section>
+
+  <section class="card">
+    <h2>Logger <small id="logcount"></small></h2>
+    <div class="log" id="log"></div>
+  </section>
+
+  <section class="card">
+    <h2>Killed by rule <small>shadow = résultat si on avait tradé</small></h2>
+    <div id="kills"></div>
+  </section>
+
+  <section class="card">
+    <h2>Whale wallets <small>classés par gain en copie</small></h2>
+    <div class="tw"><table id="wallets"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Positions ouvertes <small>[SIM]</small></h2>
+    <div class="tw"><table id="positions"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Historique des trades <small>[SIM]</small></h2>
+    <div class="tw"><table id="trades"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Coach <small id="helius"></small></h2>
+    <div id="coach"></div>
+  </section>
+
+  <footer id="foot">paper trading uniquement · aucun argent réel</footer>
+</div>
+
+<script>
+const COLORS={scout:'#3b82f6',filter:'#f59e0b',analyst:'#8b5cf6','whale hunter':'#eab308',whale:'#eab308',copy:'#ec4899',executor:'#22c55e',risk:'#a855f7',logger:'#14b8a6',coach:'#94a3b8'};
+const DEFAULT_AGENTS=['Scout','Filter','Analyst','Whale Hunter','Copy','Executor','Risk','Logger','Coach'];
+let DATA=null, DESK=null;
+try{DESK=localStorage.getItem('desk')}catch(e){}
+
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=(v,d=2)=>v==null||isNaN(v)?'—':Number(v).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sgn=(v,d=2)=>v==null||isNaN(v)?'—':(v>=0?'+':'')+num(v,d);
+const hm=t=>{if(!t)return'';const d=new Date(t);return isNaN(d)?esc(t):d.toISOString().slice(11,16)};
+const ago=t=>{const s=(Date.now()-new Date(t))/1000;if(isNaN(s))return'?';if(s<90)return Math.round(s)+' s';if(s<5400)return Math.round(s/60)+' min';return Math.round(s/3600)+' h'};
+
+async function load(){
+  try{
+    const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error(r.status);
+    DATA=await r.json();
+  }catch(e){ if(!DATA) DATA={waiting:true}; }
+  render();
+}
+
+function render(){
+  const d=DATA||{};
+  const desks=d.desks||{};
+  const names=Object.keys(desks);
+  if(!DESK||!desks[DESK]) DESK=names[0]||null;
+
+  // status
+  const st=document.getElementById('status'), ban=document.getElementById('banner');
+  const age=d.updated?(Date.now()-new Date(d.updated))/1000:Infinity;
+  if(d.waiting||!d.updated){st.className='pill sleep';st.innerHTML='<span class="dot"></span>en attente';
+    ban.style.display='block';ban.textContent='En attente des premières données de Grok Bot…';}
+  else if(age>600){st.className='pill sleep';st.innerHTML='<span class="dot"></span>moteur en veille';
+    ban.style.display='block';ban.textContent='Aucune donnée depuis '+ago(d.updated)+' : le moteur de Grok Bot est probablement en veille.';}
+  else{st.className='pill live';st.innerHTML='<span class="dot"></span>'+esc(d.status||'live');ban.style.display='none';}
+  document.getElementById('clock').textContent=d.updated?('màj il y a '+ago(d.updated)):'';
+
+  // tabs
+  document.getElementById('tabs').innerHTML=names.map(n=>`<button class="${n===DESK?'on':''}" data-d="${esc(n)}">${esc(n)}</button>`).join('');
+  document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{DESK=b.dataset.d;try{localStorage.setItem('desk',DESK)}catch(e){};render()});
+
+  // equity
+  const k=desks[DESK]||{};
+  const start=k.start??100, eq=k.equity;
+  document.getElementById('eqlabel').textContent=`${DESK?DESK+' · ':''}${k.name||'Équité'} · ${num(start,0)} USDC départ · ${k.status||''}`;
+  if(eq!=null){const [i,f]=num(eq,2).split(',');document.getElementById('eq').innerHTML=`${i}<span>,${f||'00'}</span>`}
+  else document.getElementById('eq').textContent='—';
+  const m=eq!=null?eq/start:1, mel=document.getElementById('mult');
+  mel.textContent=num(m,2).replace(',','.')+'×'; mel.className='mult'+(m<1?' neg':'');
+  const p=eq!=null?eq-start:null;
+  const pe=document.getElementById('pnl');
+  pe.className='pnl '+(p>=0?'up':'down'); pe.textContent=p==null?'':`${sgn(p)} USDC (${sgn(p/start*100,1)} %)`;
+  const sol=d.sol_hold||{};
+  document.getElementById('meta').innerHTML=[
+    `in ${num(start,0)} USDC · ${k.trades??0} trades`,
+    k.win_rate!=null?`win ${num(k.win_rate*100,0)} %`:null,
+    k.pf!=null?`PF ${num(k.pf,2)}`:null,
+    k.max_dd!=null?`DD max ${num(k.max_dd,2)}`:null,
+    sol.equity!=null?`SOL tenu ${num(sol.equity,2)}`:null
+  ].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('');
+  drawCurve(k.curve||[], sol.curve||[]);
+
+  // agents
+  const ags=(d.agents&&d.agents.length)?d.agents:DEFAULT_AGENTS.map(n=>({name:n}));
+  document.getElementById('nag').textContent=ags.length;
+  document.getElementById('deskcount').textContent=d.counters?`${num(d.counters.scanned,0)} scannés · ${num(d.counters.traded,0)} tradés`:'';
+  document.getElementById('agents').innerHTML=ags.map(a=>{
+    const c=COLORS[(a.name||'').toLowerCase()]||'#64748b';
+    return `<div class="agent"><div class="ico" style="background:${c}">${esc((a.name||'?')[0])}</div>
+      <div style="min-width:0"><div class="an">${esc(a.name)} <span class="ar">${esc(a.role||'')}</span></div>
+      <div class="al">${esc(a.last||'—')}</div></div>
+      ${a.counter?`<span class="ac" style="color:${c}">${esc(a.counter)}</span>`:''}</div>`}).join('');
+
+  // log
+  const log=(d.log||[]).filter(x=>!x.desk||x.desk===DESK||x.desk==='all'||!DESK).slice(0,120);
+  document.getElementById('logcount').textContent=(d.log||[]).length?`${(d.log||[]).length} entrées`:'';
+  document.getElementById('log').innerHTML=log.length?log.map(x=>`<div class="k-${esc(x.type||'info')}"><span class="t">● ${hm(x.t)}</span><b>${esc(x.agent||'')}${x.agent?':':''}</b> ${esc(x.text)}</div>`).join(''):'<div class="empty">aucune entrée</div>';
+
+  // kills
+  const kl=d.kills||[], mx=Math.max(1,...kl.map(x=>x.count||0));
+  document.getElementById('kills').innerHTML=kl.length?kl.map(x=>`<div class="bar"><div>
+      <div class="l"><span>${esc(x.rule)}</span>${x.shadow_trades?`<span class="sh">shadow ${x.shadow_trades} tr · win ${num((x.shadow_wr||0)*100,0)} % · ${sgn(x.shadow_pnl)}</span>`:''}</div>
+      <div class="track"><div class="fill" style="width:${(x.count||0)/mx*100}%"></div></div></div>
+      <div class="n">${num(x.count,0)}</div></div>`).join(''):'<div class="empty">aucune donnée</div>';
+
+  // wallets
+  const w=d.wallets||[];
+  document.getElementById('wallets').innerHTML=w.length?`<tr><th>wallet</th><th>score · tag</th><th class="r">copies</th><th class="r">gain copie</th></tr>`+
+    w.map(x=>`<tr><td>${esc(x.addr)}</td><td style="font-family:inherit;color:var(--mut)">${num(x.score,0)} · ${esc(x.tag||'')}</td><td class="r">${x.copies??0}</td><td class="r ${x.copy_pnl>=0?'up':'down'}">${sgn(x.copy_pnl)}</td></tr>`).join('')
+    :'<tr><td class="empty">aucun wallet retenu pour l\'instant</td></tr>';
+
+  // positions
+  const ps=(d.positions||[]).filter(x=>!DESK||x.desk===DESK||DESK==='Shadow'&&x.desk==='Shadow');
+  document.getElementById('positions').innerHTML=ps.length?`<tr><th>token</th><th class="r">entrée</th><th class="r">taille</th><th class="r">PnL</th><th class="r">stop</th></tr>`+
+    ps.map(x=>`<tr><td>${esc(x.token)}</td><td class="r">${esc(x.entry)}</td><td class="r">${num(x.size)}</td><td class="r ${x.pnl>=0?'up':'down'}">${sgn(x.pnl)}</td><td class="r">${esc(x.stop??'')}</td></tr>`).join('')
+    :'<tr><td class="empty">aucune position ouverte</td></tr>';
+
+  // trades
+  const tr=(d.trades||[]).filter(x=>!DESK||x.desk===DESK).slice(0,60);
+  document.getElementById('trades').innerHTML=tr.length?`<tr><th>heure</th><th>token</th><th class="r">score</th><th class="r">PnL net</th><th>sortie</th></tr>`+
+    tr.map(x=>`<tr><td>${hm(x.close||x.open)}</td><td>${esc(x.token)}</td><td class="r">${x.score!=null?num(x.score,0):''}</td><td class="r ${x.pnl>=0?'up':'down'}">${sgn(x.pnl)} (${sgn(x.pnl_pct,1)}%)</td><td style="color:var(--mut)">${esc(x.reason||'')}</td></tr>`).join('')
+    :'<tr><td class="empty">aucun trade sur ce desk</td></tr>';
+
+  // coach
+  const c=d.coach||{}, g=c.gate||{};
+  const hl=d.helius; document.getElementById('helius').textContent=hl?`Helius ${num(hl.used,0)} / ${num(hl.limit,0)}`:'';
+  const chk=(ok,label)=>`<div class="${ok?'ok':'no'}">${ok?'✓':'○'} ${label}</div>`;
+  document.getElementById('coach').innerHTML=
+    `<div class="sub" style="margin-bottom:6px">Leçons</div>`+
+    ((c.lessons||[]).length?`<ul class="lessons">${c.lessons.slice(0,3).map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`:'<div class="empty">pas encore assez de trades</div>')+
+    `<div class="sub" style="margin:12px 0 6px">Challengers</div>`+
+    ((c.challengers||[]).length?`<table>${c.challengers.map(x=>`<tr><td>${esc(x.name)}</td><td style="font-family:inherit;color:var(--mut)">${esc(x.change||'')}</td><td class="r">${x.trades??0} tr</td><td class="r ${x.pnl>=0?'up':'down'}">${sgn(x.pnl)}</td></tr>`).join('')}</table>`:'<div class="empty">aucun challenger actif</div>')+
+    `<div class="sub" style="margin:12px 0 0">Go-live (rapport uniquement)</div><div class="gate">
+      ${chk(g.trades>=100,`trades ${g.trades??0}/100`)}${chk(g.days>=14,`jours ${g.days??0}/14`)}
+      ${chk(g.pf>1.5,`PF ${g.pf!=null?num(g.pf,2):'—'} > 1,5`)}${chk(g.dd!=null&&g.dd<20,`DD ${g.dd!=null?num(g.dd,1):'—'} % < 20`)}
+      ${chk(g.net>0,`net ${sgn(g.net)}`)}${chk(!!g.stable,'stable')}</div>`;
+  document.getElementById('foot').textContent='paper trading uniquement · aucun argent réel'+(d.updated?' · données '+new Date(d.updated).toLocaleString('fr-FR'):'');
+}
+
+function drawCurve(c,s){
+  const svg=document.getElementById('curve');
+  const all=c.concat(s);
+  if(c.length<2){svg.innerHTML='<text x="300" y="65" text-anchor="middle" fill="#7d8894" font-size="13" font-family="monospace">courbe dès 2 points</text>';return}
+  const xs=all.map(p=>+new Date(p[0])), ys=all.map(p=>p[1]);
+  const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const X=t=>((+new Date(t))-x0)/((x1-x0)||1)*596+2, Y=v=>116-(v-y0)/((y1-y0)||1)*108;
+  const path=a=>a.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' ');
+  const last=c[c.length-1], col=last[1]>=c[0][1]?'#22c55e':'#ef4444';
+  svg.innerHTML=(s.length>1?`<path d="${path(s)}" fill="none" stroke="#7d8894" stroke-width="1.5" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>`:'')+
+    `<path d="${path(c)} L ${X(last[0])} 118 L ${X(c[0][0])} 118 Z" fill="${col}" opacity=".08"/>`+
+    `<path d="${path(c)}" fill="none" stroke="${col}" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`+
+    `<circle cx="${X(last[0])}" cy="${Y(last[1])}" r="4" fill="${col}"/>`;
+}
+
+load(); setInterval(load,30000); setInterval(()=>DATA&&render(),15000);
+</script>
+</body>
+</html>
