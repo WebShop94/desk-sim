@@ -1,6 +1,8 @@
 # data.json format (Grok Bot writes ONLY this file; never touch index.html)
 
-Push every 1-2 min. All amounts in USDC, times ISO UTC. Lists newest first. Keep it < 500 KB
+WHERE: push data.json to branch `data` (not main) every 1-2 min -> no Pages rebuild, no rate limit.
+The page reads it live via the GitHub API. Push to `main` at most once per 6h (fallback copy).
+Every desk incl. Shadow: "start" = starting capital, "equity" = start + net PnL (never PnL alone). All amounts in USDC, times ISO UTC. Lists newest first. Keep it < 500 KB
 (log: last 200, trades: last 200, curve: max 500 points per desk). No keys, no private info.
 
 ```json
