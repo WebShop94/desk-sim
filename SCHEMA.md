@@ -31,6 +31,10 @@ Every desk incl. Shadow: "start" = starting capital, "equity" = start + net PnL 
 }
 ```
 Agent names expected: Scout, Filter, Analyst, Whale Hunter, Copy, Executor, Risk, Logger, Coach, Skill Hunter.
+Lab (v4): "lab": {"tokens_today": 140, "retired": 12, "lesson": "1-line lesson of the day",
+  "variants": [{"name": "pullback-25_vstop", "skills": ["pullback-entry v1.0", "volatility-stop v1.1"],
+  "trades": 34, "win_rate": 0.41, "net": 1.2, "pf": 1.35, "status": "SHADOW|CHALLENGER|VALIDATED|REJECTED"}]}
+  (sorted best first, max 30).
 Optional per agent: "skills": ["rugcheck-report-reading v1.1", "lp-lock-check v1.0"].
 Optional top level: "skills": {"testing": [{"name": "...", "agent": "...", "trades": 12, "pnl": 0.3}],
   "adopted": ["name vX"], "rejected": [{"name": "...", "reason": "..."}]} (shown in Coach card).

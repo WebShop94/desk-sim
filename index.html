@@ -109,6 +109,11 @@ footer{color:var(--mut);font:12px var(--mono);text-align:center;margin-top:16px}
   </section>
 
   <section class="card">
+    <h2>Labo <small id="labsum"></small></h2>
+    <div class="tw"><table id="lab"></table></div>
+  </section>
+
+  <section class="card">
     <h2>Killed by rule <small>shadow = résultat si on avait tradé</small></h2>
     <div id="kills"></div>
   </section>
@@ -218,6 +223,18 @@ function render(){
   const log=(d.log||[]).filter(x=>!x.desk||x.desk===DESK||x.desk==='all'||!DESK).slice(0,120);
   document.getElementById('logcount').textContent=(d.log||[]).length?`${(d.log||[]).length} entrées`:'';
   document.getElementById('log').innerHTML=log.length?log.map(x=>`<div class="k-${esc(x.type||'info')}"><span class="t">● ${hm(x.t)}</span><b>${esc(x.agent||'')}${x.agent?':':''}</b> ${esc(x.text)}</div>`).join(''):'<div class="empty">aucune entrée</div>';
+
+  // lab
+  const lab=d.lab||{}, lv=lab.variants||[];
+  const SC={VALIDATED:'#22c55e',CHALLENGER:'#3b82f6',SHADOW:'#7d8894',REJECTED:'#ef4444'};
+  document.getElementById('labsum').textContent=lv.length||lab.retired?`${lv.length} actives · ${lab.retired??0} rejetées · ${lab.tokens_today??'?'} tokens/jour`:'';
+  document.getElementById('lab').innerHTML=lv.length?`<tr><th>variante</th><th class="r">tr</th><th class="r">win</th><th class="r">net</th><th class="r">PF</th><th>statut</th></tr>`+
+    lv.slice(0,15).map(x=>`<tr><td title="${esc((x.skills||[]).join(' + '))}">${esc(x.name)}<div style="font:11px var(--mono);color:var(--mut);max-width:240px;overflow:hidden;text-overflow:ellipsis">${esc((x.skills||[]).join(' + '))}</div></td>
+      <td class="r">${x.trades??0}</td><td class="r">${x.win_rate!=null?num(x.win_rate*100,0)+'%':'—'}</td>
+      <td class="r ${x.net>=0?'up':'down'}">${sgn(x.net)}</td><td class="r">${x.pf!=null?num(x.pf,2):'—'}</td>
+      <td style="color:${SC[x.status]||'#7d8894'};font-weight:700">${esc(x.status||'')}</td></tr>`).join('')
+    +(lab.lesson?`<tr><td colspan="6" style="font-family:inherit;color:var(--mut);white-space:normal">💡 ${esc(lab.lesson)}</td></tr>`:'')
+    :'<tr><td class="empty">le labo démarre…</td></tr>';
 
   // kills
   const kl=d.kills||[], mx=Math.max(1,...kl.map(x=>x.count||0));
