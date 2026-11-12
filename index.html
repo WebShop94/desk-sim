@@ -137,8 +137,8 @@ footer{color:var(--mut);font:12px var(--mono);text-align:center;margin-top:16px}
 </div>
 
 <script>
-const COLORS={scout:'#3b82f6',filter:'#f59e0b',analyst:'#8b5cf6','whale hunter':'#eab308',whale:'#eab308',copy:'#ec4899',executor:'#22c55e',risk:'#a855f7',logger:'#14b8a6',coach:'#94a3b8'};
-const DEFAULT_AGENTS=['Scout','Filter','Analyst','Whale Hunter','Copy','Executor','Risk','Logger','Coach'];
+const COLORS={scout:'#3b82f6',filter:'#f59e0b',analyst:'#8b5cf6','whale hunter':'#eab308',whale:'#eab308',copy:'#ec4899',executor:'#22c55e',risk:'#a855f7',logger:'#14b8a6',coach:'#94a3b8','skill hunter':'#06b6d4'};
+const DEFAULT_AGENTS=['Scout','Filter','Analyst','Whale Hunter','Copy','Executor','Risk','Logger','Coach','Skill Hunter'];
 let DATA=null, DESK=null;
 try{DESK=localStorage.getItem('desk')}catch(e){}
 
@@ -206,7 +206,8 @@ function render(){
     const c=COLORS[(a.name||'').toLowerCase()]||'#64748b';
     return `<div class="agent"><div class="ico" style="background:${c}">${esc((a.name||'?')[0])}</div>
       <div style="min-width:0"><div class="an">${esc(a.name)} <span class="ar">${esc(a.role||'')}</span></div>
-      <div class="al">${esc(a.last||'—')}</div></div>
+      <div class="al">${esc(a.last||'—')}</div>
+      ${(a.skills||[]).length?`<div class="al" style="font:11px var(--mono);color:${c}">⚙ ${a.skills.map(esc).join(' · ')}</div>`:''}</div>
       ${a.counter?`<span class="ac" style="color:${c}">${esc(a.counter)}</span>`:''}</div>`}).join('');
 
   // log
@@ -248,6 +249,9 @@ function render(){
     ((c.lessons||[]).length?`<ul class="lessons">${c.lessons.slice(0,3).map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`:'<div class="empty">pas encore assez de trades</div>')+
     `<div class="sub" style="margin:12px 0 6px">Challengers</div>`+
     ((c.challengers||[]).length?`<table>${c.challengers.map(x=>`<tr><td>${esc(x.name)}</td><td style="font-family:inherit;color:var(--mut)">${esc(x.change||'')}</td><td class="r">${x.trades??0} tr</td><td class="r ${x.pnl>=0?'up':'down'}">${sgn(x.pnl)}</td></tr>`).join('')}</table>`:'<div class="empty">aucun challenger actif</div>')+
+    (()=>{const s=d.skills||{};const t=s.testing||[],a=s.adopted||[],r=s.rejected||[];
+      return `<div class="sub" style="margin:12px 0 6px">Skills · ${a.length} adoptés · ${t.length} en test · ${r.length} rejetés</div>`+
+      (t.length?`<table>${t.map(x=>`<tr><td>${esc(x.name)}</td><td style="font-family:inherit;color:var(--mut)">${esc(x.agent||'')}</td><td class="r">${x.trades??0} tr</td><td class="r ${x.pnl>=0?'up':'down'}">${sgn(x.pnl)}</td></tr>`).join('')}</table>`:'<div class="empty">aucun skill en test</div>')})()+
     `<div class="sub" style="margin:12px 0 0">Go-live (rapport uniquement)</div><div class="gate">
       ${chk(g.trades>=100,`trades ${g.trades??0}/100`)}${chk(g.days>=14,`jours ${g.days??0}/14`)}
       ${chk(g.pf>1.5,`PF ${g.pf!=null?num(g.pf,2):'—'} > 1,5`)}${chk(g.dd!=null&&g.dd<20,`DD ${g.dd!=null?num(g.dd,1):'—'} % < 20`)}

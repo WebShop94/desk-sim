@@ -28,4 +28,7 @@ Push every 1-2 min. All amounts in USDC, times ISO UTC. Lists newest first. Keep
   "helius": {"used": 20000, "limit": 30000}
 }
 ```
-Agent names expected: Scout, Filter, Analyst, Whale Hunter, Copy, Executor, Risk, Logger, Coach.
+Agent names expected: Scout, Filter, Analyst, Whale Hunter, Copy, Executor, Risk, Logger, Coach, Skill Hunter.
+Optional per agent: "skills": ["rugcheck-report-reading v1.1", "lp-lock-check v1.0"].
+Optional top level: "skills": {"testing": [{"name": "...", "agent": "...", "trades": 12, "pnl": 0.3}],
+  "adopted": ["name vX"], "rejected": [{"name": "...", "reason": "..."}]} (shown in Coach card).
