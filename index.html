@@ -155,11 +155,11 @@ const ago=t=>{const s=(Date.now()-new Date(t))/1000;if(isNaN(s))return'?';if(s<9
 
 // Live data: branch "data" read through the GitHub API (no Pages rebuild, ~1-2 min delay).
 // Fallback: data.json published with the page.
-const LIVE='https://api.github.com/repos/WebShop94/desk-sim/contents/data.json?ref=data';
+const LIVE='https://raw.githubusercontent.com/WebShop94/desk-sim/data/data.json';
 async function getJSON(url,opt){const r=await fetch(url,opt);if(!r.ok)throw new Error(r.status);return r.json()}
 async function load(){
   let a=null,b=null;
-  try{a=await getJSON(LIVE,{headers:{Accept:'application/vnd.github.raw+json'},cache:'no-store'})}catch(e){}
+  try{a=await getJSON(LIVE+'?t='+Date.now(),{cache:'no-store'})}catch(e){}
   if(!a){try{b=await getJSON('data.json?t='+Date.now(),{cache:'no-store'})}catch(e){}}
   const n=a||b;
   if(n) DATA=n; else if(!DATA) DATA={waiting:true};
@@ -178,7 +178,7 @@ function render(){
   if(d.waiting||!d.updated){st.className='pill sleep';st.innerHTML='<span class="dot"></span>en attente';
     ban.style.display='block';ban.textContent='En attente des premières données de Grok Bot…';}
   else if(age>600){st.className='pill sleep';st.innerHTML='<span class="dot"></span>moteur en veille';
-    ban.style.display='block';ban.textContent='Aucune donnée depuis '+ago(d.updated)+' : le moteur de Grok Bot est probablement en veille.';}
+    ban.style.display='block';ban.textContent='Aucune donnée depuis '+ago(d.updated)+' : le moteur du PC est probablement en veille ou arrêté.';}
   else{st.className='pill live';st.innerHTML='<span class="dot"></span>'+esc(d.status||'live');ban.style.display='none';}
   document.getElementById('clock').textContent=d.updated?('màj il y a '+ago(d.updated)):'';
 
